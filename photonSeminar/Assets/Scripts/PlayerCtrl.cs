@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerCtrl : MonoBehaviour
+public class PlayerCtrl : MonoBehaviourPunCallbacks
 {
+    public int myHp = 3;
     private Vector3 moveVec;
     private new Transform transform;
     private float speedController;
+    private PhotonView pv;
 
     void Start()
     {
         transform = GetComponent<Transform>();
+        pv = GetComponent<PhotonView>();
         speedController = 3f;
     }
 
@@ -19,8 +23,17 @@ public class PlayerCtrl : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Turn();
+        if(pv.IsMine)
+        {
+            Move();
+            Turn();
+            Attack();
+
+            if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                StartCoroutine(ScoreBoardOn());
+            }
+        }
     }
 
     void Move()
@@ -48,5 +61,56 @@ public class PlayerCtrl : MonoBehaviour
             newForward.y = 0;
             transform.rotation = Quaternion.LookRotation(newForward);
         }
+    }
+
+    void Attack()
+    {
+        if(Input.GetMouseButtonUp(0))
+        {
+            pv.RPC("shoot", RpcTarget.Others);
+        }
+    }
+
+    void OnTriggerEnter(Collider coll)
+    {
+        if(pv.IsMine)
+        {
+            if(this.tag == "Player1" && coll.tag == "Bomb2")
+            {
+                myHp--;
+                pv.RPC("syncHitByBomb", RpcTarget.Others, null);
+            }
+
+            if(this.tag == "Player2" && coll.tag == "Bomb1")
+            {
+                myHp--;
+                pv.RPC("syncHitByBomb", RpcTarget.Others, null);
+            }
+        }
+    }
+
+    IEnumerator ScoreBoardOn()
+    {
+        yield return new WaitForSeconds(0.2f);
+        GameObject.Find("GameManager").transform.GetChild(0).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void shoot()
+    {
+        if(this.tag == "Player1")
+        {
+            PhotonNetwork.Instantiate("Bomb1", transform.position, transform.rotation, 0);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("Bomb2", transform.position, transform.rotation, 0);
+        }
+    }
+
+    [PunRPC]
+    void syncHitByBomb()
+    {
+        myHp--;
     }
 }
