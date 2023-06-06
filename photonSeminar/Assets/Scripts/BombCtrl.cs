@@ -23,18 +23,18 @@ public class BombCtrl : MonoBehaviourPunCallbacks
     {
         if(this.tag == "Bomb1" && coll.tag == "Player2")
         {
-            PhotonNetwork.Destroy(gameObject);
+            Destroy(gameObject);
         }
 
         if(this.tag == "Bomb2" && coll.tag == "Player1")
         {
-            PhotonNetwork.Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
     IEnumerator DestroyItself()
     {
         yield return waitBeforeDestroy;
-        PhotonNetwork.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

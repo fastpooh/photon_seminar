@@ -172,6 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myHp: 3
+  bomb1: {fileID: 3919728790411083365, guid: fdaf991740a28184386132cbecbc6eb8, type: 3}
+  bomb2: {fileID: 3919728790411083365, guid: ce7a551300aa30a4a81264ece0d5c3ef, type: 3}
 --- !u!114 &3313345754574514847
 MonoBehaviour:
   m_ObjectHideFlags: 0

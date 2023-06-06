@@ -41,28 +41,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogError("Error!");
     }
 
-
-    void Update()
-    {
-        
-    }
-
-    void OnTriggerEnter(Collider coll)
-    {
-        if(coll.tag == "Player2")
-            StartCoroutine(TurnScoreBoardOn());
-    }
-
     IEnumerator TurnScoreBoardOn()
     {
         yield return new WaitForSeconds(0.1f);
         scoreBoard.SetActive(true);
     }
 
+/*
     private void OnExitClick()
     {
         PhotonNetwork.LeaveRoom();
     }
+
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("StartUI");
@@ -74,4 +64,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(!scoreBoard.activeSelf)
             StartCoroutine(TurnScoreBoardOn());;
     }
+*/
 }

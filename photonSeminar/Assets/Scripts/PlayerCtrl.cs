@@ -11,6 +11,9 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
     private float speedController;
     private PhotonView pv;
 
+    public GameObject bomb1;
+    public GameObject bomb2;
+
     void Start()
     {
         transform = GetComponent<Transform>();
@@ -65,9 +68,14 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
 
     void Attack()
     {
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonUp(0) && myHp > 0)
         {
             pv.RPC("shoot", RpcTarget.Others);
+
+            if(this.tag == "Player1")
+                Instantiate(bomb1, transform.position, transform.rotation);
+            else
+                Instantiate(bomb2, transform.position, transform.rotation);
         }
     }
 
@@ -78,12 +86,16 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
             if(this.tag == "Player1" && coll.tag == "Bomb2")
             {
                 myHp--;
+                if(myHp < 0)
+                    myHp = 0;
                 pv.RPC("syncHitByBomb", RpcTarget.Others, null);
             }
 
             if(this.tag == "Player2" && coll.tag == "Bomb1")
             {
                 myHp--;
+                if(myHp < 0)
+                    myHp = 0;
                 pv.RPC("syncHitByBomb", RpcTarget.Others, null);
             }
         }
@@ -100,11 +112,11 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
     {
         if(this.tag == "Player1")
         {
-            PhotonNetwork.Instantiate("Bomb1", transform.position, transform.rotation, 0);
+            Instantiate(bomb1, transform.position, transform.rotation);
         }
         else
         {
-            PhotonNetwork.Instantiate("Bomb2", transform.position, transform.rotation, 0);
+            Instantiate(bomb2, transform.position, transform.rotation);
         }
     }
 
