@@ -78,7 +78,7 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
                 Instantiate(bomb2, transform.position, transform.rotation);
         }
     }
-
+/*
     void OnTriggerEnter(Collider coll)
     {
         if(pv.IsMine)
@@ -100,7 +100,7 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
             }
         }
     }
-
+*/
     IEnumerator ScoreBoardOn()
     {
         yield return new WaitForSeconds(0.2f);
@@ -120,9 +120,11 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
         }
     }
 
+/*
     [PunRPC]
     void syncHitByBomb()
     {
         myHp--;
     }
+*/
 }
