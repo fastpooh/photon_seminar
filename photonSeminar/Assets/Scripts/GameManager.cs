@@ -9,14 +9,18 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     private int i;
     public GameObject scoreBoard;
-    private PhotonView pv;
     //public Button exitBtn;
 
     void Awake()
     {
         CreatePlayer();
         scoreBoard.SetActive(false);
-        //exitBtn.onClick.AddListener(() => OnExitClick());
+    }
+
+    void Start()
+    {
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 30;
     }
 
     void CreatePlayer()

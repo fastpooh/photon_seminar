@@ -11,7 +11,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     private readonly string version = "1.0";
     private string userId = "Chris";                // 편의상 user ID 고정, 이후 변경해야 함
 
-
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
