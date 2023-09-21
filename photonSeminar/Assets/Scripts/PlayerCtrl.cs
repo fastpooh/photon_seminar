@@ -24,14 +24,16 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
     // float hAxis => Input.GetAxis("Horizontal");
     float vAxis => Input.GetAxis("Vertical");
 
+
     void Update()
     {
-        if(pv.IsMine)
+        if(pv.IsMine)  // if I control this character
         {
-            Move();
-            Turn();
-            Attack();
+            Move();    // Same as singleplay code
+            Turn();    // Same as singleplay code
+            Attack();  // Different from singleplay code
 
+            // If two players are in the room, turn scoreboard on
             if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
             {
                 StartCoroutine(ScoreBoardOn());
@@ -70,14 +72,18 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
     {
         if(Input.GetMouseButtonUp(0) && myHp > 0)
         {
+            // Shoot bomb in other's screen
             pv.RPC("shoot", RpcTarget.Others);
 
+            // Shoot bomb in my screen
             if(this.tag == "Player1")
                 Instantiate(bomb1, transform.position, transform.rotation);
             else
                 Instantiate(bomb2, transform.position, transform.rotation);
         }
     }
+
+
 /*
     void OnTriggerEnter(Collider coll)
     {
@@ -111,13 +117,9 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
     void shoot()
     {
         if(this.tag == "Player1")
-        {
             Instantiate(bomb1, transform.position, transform.rotation);
-        }
         else
-        {
             Instantiate(bomb2, transform.position, transform.rotation);
-        }
     }
 
 /*

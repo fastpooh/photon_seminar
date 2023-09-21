@@ -8,17 +8,16 @@ using TMPro;
 
 public class ScoreBoard : MonoBehaviourPunCallbacks
 {
-    //public PlayerCtrl player1;
-    //public PlayerCtrl player2;
-
     public GameObject exitUI;
     public TextMeshProUGUI winnerLog;
-
     public TextMeshProUGUI hp1;
     public TextMeshProUGUI hp2;
 
     public int HP1 = 3;
     public int HP2 = 3;
+
+    //public PlayerCtrl player1;
+    //public PlayerCtrl player2;
 
 
     void Start()
@@ -30,9 +29,11 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        // Update scoreboard hp
         hp1.text = "HP : " + HP1;
         hp2.text = "HP : " + HP2;
 
+        // Detect winner
         if(HP1 <= 0)
         {
             HP1 = 0;
