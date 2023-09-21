@@ -11,6 +11,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     private readonly string version = "1.0";
     private string userId = "Chris";                // 편의상 user ID 고정, 이후 변경해야 함
 
+    // Multiplay Settings
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -19,11 +20,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+    // If connected to internet, join lobby
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
     }
 
+    // When no room exists and try to enter room, OnJoinRandomFailed is called
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         RoomOptions ro = new RoomOptions();
@@ -31,9 +34,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         ro.IsOpen = true;
         ro.IsVisible = true;
 
-        PhotonNetwork.CreateRoom("Room1", ro);
+        PhotonNetwork.CreateRoom("Room1", ro);     // Make new game room
     }
 
+    // When you join a room
     public override void OnJoinedRoom()
     {
         if(PhotonNetwork.IsMasterClient)
@@ -43,11 +47,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     }
 
 #region  UI_BUTTON_EVENT
+    // Exit Game
     public void OnExittClick()
     {
         Application.Quit();
     }
 
+    // Enter room
     public void OnStartClick()
     {
         PhotonNetwork.JoinRandomRoom();

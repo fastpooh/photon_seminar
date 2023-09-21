@@ -8,28 +8,32 @@ using TMPro;
 
 public class ScoreBoard : MonoBehaviourPunCallbacks
 {
+    // Players
     public PlayerCtrl player1;
     public PlayerCtrl player2;
 
-    public GameObject exitUI;
-    public TextMeshProUGUI winnerLog;
-
+    // Player hp
     public TextMeshProUGUI hp1;
     public TextMeshProUGUI hp2;
 
+    // UI
+    public GameObject exitUI;
+    public TextMeshProUGUI winnerLog;
 
     void Start()
     {
+        // Find each player
         player1 = GameObject.FindWithTag("Player1").GetComponent<PlayerCtrl>();
         player2 = GameObject.FindWithTag("Player2").GetComponent<PlayerCtrl>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Update scoreboard
         hp1.text = "HP : " + player1.myHp;
         hp2.text = "HP : " + player2.myHp;
 
+        // Detect winner
         if(player1.myHp == 0)
         {
             exitUI.SetActive(true);

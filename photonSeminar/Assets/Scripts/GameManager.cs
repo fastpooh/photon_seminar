@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     private int i;
     public GameObject scoreBoard;
-    //public Button exitBtn;
 
     void Awake()
     {
@@ -23,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.SerializationRate = 30;
     }
 
+    // process of creating player in a room
     void CreatePlayer()
     {
         i = 0;
@@ -39,34 +39,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         else if(i == 2)
         {
             PhotonNetwork.Instantiate("Player2", points[i].position, points[i].rotation, 0);
-            StartCoroutine(TurnScoreBoardOn());
         }
         else
             Debug.LogError("Error!");
     }
-
-    IEnumerator TurnScoreBoardOn()
-    {
-        yield return new WaitForSeconds(0.1f);
-        scoreBoard.SetActive(true);
-    }
-
-/*
-    private void OnExitClick()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnLeftRoom()
-    {
-        SceneManager.LoadScene("StartUI");
-    }
-
-    [PunRPC]
-    void syncScoreBoardOn()
-    {
-        if(!scoreBoard.activeSelf)
-            StartCoroutine(TurnScoreBoardOn());;
-    }
-*/
 }

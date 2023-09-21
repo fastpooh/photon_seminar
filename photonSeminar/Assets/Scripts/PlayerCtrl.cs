@@ -5,17 +5,21 @@ using Photon.Pun;
 
 public class PlayerCtrl : MonoBehaviourPunCallbacks
 {
+    // Player spec
     public int myHp = 3;
+    private float speedController;
     private Vector3 moveVec;
     private new Transform transform;
-    private float speedController;
     private PhotonView pv;
 
+
+    // Shooting Bombs
     public GameObject bomb1;
     public GameObject bomb2;
 
     void Start()
     {
+        // Initial settings
         transform = GetComponent<Transform>();
         pv = GetComponent<PhotonView>();
         speedController = 3f;
@@ -26,12 +30,13 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if(pv.IsMine)
+        if(pv.IsMine) // Control only my player
         {
             Move();
             Turn();
             Attack();
 
+            // If two players exist, turn on the scoreboard
             if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
             {
                 StartCoroutine(ScoreBoardOn());
@@ -39,6 +44,7 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
         }
     }
 
+    // Same as singleplay script
     void Move()
     {
         if(transform.position.z < -8.2 && vAxis < 0)
@@ -52,6 +58,7 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
         transform.position += moveVec*speedController*Time.deltaTime;
     }
 
+    // Same as singleplay script
     void Turn()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -66,11 +73,12 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
         }
     }
 
+    // You should sync instantiated bomb
     void Attack()
     {
         if(Input.GetMouseButtonUp(0) && myHp > 0)
         {
-            pv.RPC("shoot", RpcTarget.Others);
+            pv.RPC("shoot", RpcTarget.Others); // Tell others that I shot a bomb
 
             if(this.tag == "Player1")
                 Instantiate(bomb1, transform.position, transform.rotation);
@@ -79,6 +87,7 @@ public class PlayerCtrl : MonoBehaviourPunCallbacks
         }
     }
 
+    // If I get hit by a bomb
     void OnTriggerEnter(Collider coll)
     {
         if(pv.IsMine)

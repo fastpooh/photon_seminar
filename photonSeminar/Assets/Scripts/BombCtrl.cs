@@ -5,20 +5,22 @@ using Photon.Pun;
 
 public class BombCtrl : MonoBehaviourPunCallbacks
 {
+    // Bomb info variables
     private Rigidbody rb;
     public float force = 500f;
-    private PhotonView pv;
     
+    // Cache wait for seconds
     WaitForSeconds waitBeforeDestroy = new WaitForSeconds(3f);
 
     void Start()
     {
-        pv = GetComponent<PhotonView>();
+        // Bomb moves on its own, destroys itself after few seconds
         rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * force);
         StartCoroutine(DestroyItself());
     }
 
+    // If it hits person, it disappears
     void OnTriggerEnter(Collider coll)
     {
         if(this.tag == "Bomb1" && coll.tag == "Player2")
@@ -32,6 +34,7 @@ public class BombCtrl : MonoBehaviourPunCallbacks
         }
     }
 
+    // Bomb destroys itself after few seconds
     IEnumerator DestroyItself()
     {
         yield return waitBeforeDestroy;
